@@ -60,15 +60,9 @@ export const TOOLS = [
     items: [
       {
         id: 'csv-to-json',
-        name: 'CSV to JSON',
+        name: 'CSV 到 JSON',
         desc: 'CSV 数据解析为 JSON 数组，支持自定义分隔符',
         icon: '📊'
-      },
-      {
-        id: 'json-formatter',
-        name: 'JSON 格式化',
-        desc: 'JSON 美化、压缩、校验，支持 2/4 空格缩进',
-        icon: '✨'
       },
       {
         id: 'yaml-to-json',
@@ -77,16 +71,28 @@ export const TOOLS = [
         icon: '📄'
       },
       {
-        id: 'jwt-parser',
-        name: 'JWT 解析器',
-        desc: '解码 JWT 的 Header 与 Payload，无需签名验证',
-        icon: '🎟️'
-      },
-      {
         id: 'xml-to-json',
         name: 'XML 到 JSON',
         desc: 'XML 文档转换为 JSON 结构，支持属性与命名空间',
         icon: '🏷️'
+      },
+      {
+        id: 'json-formatter',
+        name: 'JSON 格式化',
+        desc: 'JSON 美化、压缩、校验，支持 2/4 空格缩进',
+        icon: '✨'
+      },
+      {
+        id: 'xml-formatter',
+        name: 'XML 格式化',
+        desc: 'XML 美化、压缩、校验，支持 2/4 空格缩进',
+        icon: '📰'
+      },
+      {
+        id: 'jwt-parser',
+        name: 'JWT 解析器',
+        desc: '解码 JWT 的 Header 与 Payload，无需签名验证',
+        icon: '🎟️'
       }
     ]
   },
@@ -101,10 +107,28 @@ export const TOOLS = [
         icon: '📡'
       },
       {
+        id: 'url-encoder',
+        name: 'URL 编码/解码',
+        desc: '对 URL 字符串进行编码与解码，支持完整 URL 与组件级模式',
+        icon: '🔗'
+      },
+      {
         id: 'json-diff',
         name: 'JSON 差异比较',
         desc: '并排比对两个 JSON，高亮新增/删除/修改的字段',
         icon: '🔍'
+      }
+    ]
+  },
+  {
+    group: '文本',
+    icon: '📝',
+    items: [
+      {
+        id: 'text-diff',
+        name: '文本对比',
+        desc: '逐行对比两段文本，左右并排高亮新增/删除/修改',
+        icon: '🔀'
       }
     ]
   }

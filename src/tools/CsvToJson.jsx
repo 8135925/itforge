@@ -107,7 +107,7 @@ export default function CsvToJson() {
 
   return (
     <div className="space-y-4">
-      <ToolHeader title="CSV to JSON" description="CSV 数据解析为 JSON 数组，支持自定义分隔符与表头" />
+      <ToolHeader title="CSV 到 JSON" description="CSV 数据解析为 JSON 数组，支持自定义分隔符与表头" />
 
       {/* 配置面板 */}
       <div className="industrial-card flex flex-wrap items-center gap-4 p-4">
