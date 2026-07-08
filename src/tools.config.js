@@ -89,6 +89,24 @@ export const TOOLS = [
         icon: '🏷️'
       }
     ]
+  },
+  {
+    group: 'Web',
+    icon: '🌐',
+    items: [
+      {
+        id: 'http-status-codes',
+        name: 'HTTP 状态码',
+        desc: '查询 HTTP / WebDav 状态码含义，支持模糊搜索',
+        icon: '📡'
+      },
+      {
+        id: 'json-diff',
+        name: 'JSON 差异比较',
+        desc: '并排比对两个 JSON，高亮新增/删除/修改的字段',
+        icon: '🔍'
+      }
+    ]
   }
 ];
 
