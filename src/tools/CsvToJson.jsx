@@ -106,7 +106,7 @@ export default function CsvToJson() {
   }, [csvInput, delimiter, hasHeader]);
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4 h-[calc(100vh-80px)]">
       <ToolHeader title="CSV 到 JSON" description="CSV 数据解析为 JSON 数组，支持自定义分隔符与表头" />
 
       {/* 配置面板 */}
@@ -156,8 +156,8 @@ export default function CsvToJson() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="industrial-card p-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 flex-1 min-h-0">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label flex items-center gap-1">
               <FileSpreadsheet size={12} /> CSV 输入
@@ -168,10 +168,10 @@ export default function CsvToJson() {
             value={csvInput}
             onChange={(e) => setCsvInput(e.target.value)}
             placeholder={'name,age,city\nAlice,30,Beijing\nBob,25,Shanghai'}
-            className="industrial-textarea industrial-scroll h-72"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none"
           />
         </div>
-        <div className="industrial-card p-4">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label">JSON 输出</span>
             <button type="button" onClick={handleCopy} disabled={!jsonOutput} className="btn-industrial-ghost text-xs">
@@ -182,7 +182,7 @@ export default function CsvToJson() {
             value={jsonOutput}
             readOnly
             placeholder="转换结果..."
-            className="industrial-textarea industrial-scroll h-72 bg-muted/40"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none bg-muted/40"
           />
         </div>
       </div>

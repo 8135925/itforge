@@ -98,7 +98,7 @@ export default function YamlToJson() {
   }, [yamlInput]);
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4 h-[calc(100vh-80px)]">
       <ToolHeader title="YAML 到 JSON" description="YAML 与 JSON 双向互转，适用于配置文件处理" />
 
       {/* 双向转换按钮 */}
@@ -125,8 +125,8 @@ export default function YamlToJson() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="industrial-card p-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 flex-1 min-h-0">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label flex items-center gap-1">
               <FileText size={12} /> YAML
@@ -137,10 +137,10 @@ export default function YamlToJson() {
             value={yamlInput}
             onChange={(e) => setYamlInput(e.target.value)}
             placeholder={'name: ITForge\nversion: 1.0.0\nfeatures:\n  - token\n  - hash'}
-            className="industrial-textarea industrial-scroll h-72 font-mono"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none font-mono"
           />
         </div>
-        <div className="industrial-card p-4">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label">JSON</span>
             <span className="font-mono text-xxs text-ink-muted/60">{jsonOutput.length} chars</span>
@@ -149,7 +149,7 @@ export default function YamlToJson() {
             value={jsonOutput}
             onChange={(e) => setJsonOutput(e.target.value)}
             placeholder='{"key": "value"}'
-            className="industrial-textarea industrial-scroll h-72 bg-muted/40 font-mono"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none bg-muted/40 font-mono"
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Copy, Check, Tag, ArrowRight, AlertCircle } from 'lucide-react';
+import { Copy, Check, Tag, AlertCircle } from 'lucide-react';
 
 /**
  * XmlToJson - XML 转 JSON 工具
@@ -124,7 +124,7 @@ export default function XmlToJson() {
   }, [xmlInput]);
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4 h-[calc(100vh-80px)]">
       <ToolHeader title="XML 到 JSON" description="XML 文档转换为 JSON 结构，属性以 @ 前缀标记" />
 
       {error && (
@@ -133,8 +133,8 @@ export default function XmlToJson() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="industrial-card p-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 flex-1 min-h-0">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label flex items-center gap-1">
               <Tag size={12} /> XML 输入
@@ -145,10 +145,10 @@ export default function XmlToJson() {
             value={xmlInput}
             onChange={(e) => setXmlInput(e.target.value)}
             placeholder={'<root>\n  <item id="1">值</item>\n  <item id="2">值2</item>\n</root>'}
-            className="industrial-textarea industrial-scroll h-72 font-mono"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none font-mono"
           />
         </div>
-        <div className="industrial-card p-4">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label">JSON 输出</span>
             <button
@@ -164,15 +164,9 @@ export default function XmlToJson() {
             value={jsonOutput}
             readOnly
             placeholder="转换结果..."
-            className="industrial-textarea industrial-scroll h-72 bg-muted/40 font-mono"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none bg-muted/40 font-mono"
           />
         </div>
-      </div>
-
-      <div className="flex justify-center">
-        <button type="button" onClick={convert} className="btn-industrial-primary">
-          <ArrowRight size={16} /> 转换为 JSON
-        </button>
       </div>
     </div>
   );

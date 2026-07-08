@@ -178,7 +178,7 @@ export default function XmlFormatter() {
   }, [input, indent]);
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4 h-[calc(100vh-80px)]">
       {/* 工具头部 */}
       <ToolHeader
         title="XML 格式化"
@@ -238,8 +238,8 @@ export default function XmlFormatter() {
       )}
 
       {/* 输入输出双栏 */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="industrial-card p-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 flex-1 min-h-0">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label flex items-center gap-1">
               <Code2 size={12} /> 输入 // SOURCE
@@ -250,11 +250,11 @@ export default function XmlFormatter() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={'<root>\n  <item id="1">值</item>\n</root>'}
-            className="industrial-textarea industrial-scroll h-80 font-mono"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none font-mono"
             spellCheck={false}
           />
         </div>
-        <div className="industrial-card p-4">
+        <div className="industrial-card flex flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="tech-label">输出 // RESULT</span>
             <span className="font-mono text-xxs text-ink-muted/60">{output.length} chars</span>
@@ -263,7 +263,7 @@ export default function XmlFormatter() {
             value={output}
             readOnly
             placeholder="格式化结果将在此显示..."
-            className="industrial-textarea industrial-scroll h-80 bg-muted/40 font-mono"
+            className="industrial-textarea industrial-scroll flex-1 min-h-0 resize-none bg-muted/40 font-mono"
             spellCheck={false}
           />
         </div>
