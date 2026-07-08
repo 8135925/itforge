@@ -22,13 +22,14 @@ self.MonacoEnvironment = {
 // 注册本地 monaco 实例，@monaco-editor/react 将使用本地包而非 CDN
 loader.config({ monaco });
 
-// 定义透明背景的暗色主题（融入项目工业风背景）
-monaco.editor.defineTheme('itforge-dark', {
-  base: 'vs-dark',
+// 定义透明背景的浅色主题（白底黑字，融入项目工业风浅色面板）
+monaco.editor.defineTheme('itforge-light', {
+  base: 'vs',
   inherit: true,
   rules: [],
   colors: {
     'editor.background': '#00000000',
+    'editorCursor.foreground': '#2d3436',
     'diffEditor.insertedTextBackground': '#22c55e33',
     'diffEditor.removedTextBackground': '#ef444433',
     'diffEditorGutter.insertedLineBackground': '#22c55e22',
@@ -65,6 +66,8 @@ const LANGUAGES = [
 // ========== 主组件 ==========
 
 export default function TextDiff() {
+  // leftText/rightText 仅用于初始化和"清空"时重置编辑器内容
+  // 用户日常输入由 Monaco 内部管理，通过 ref 同步最新值，避免 prop 变化触发 setValue 重置光标
   const [leftText, setLeftText] = useState(DEFAULT_LEFT);
   const [rightText, setRightText] = useState(DEFAULT_RIGHT);
   const [language, setLanguage] = useState('plaintext');
@@ -72,7 +75,9 @@ export default function TextDiff() {
   const [copied, setCopied] = useState(false);
 
   const editorRef = useRef(null);
-  const isInternalChange = useRef(false);
+  // ref 始终保存两侧编辑器的最新文本，用于"复制"等操作，不触发重渲染
+  const leftTextRef = useRef(DEFAULT_LEFT);
+  const rightTextRef = useRef(DEFAULT_RIGHT);
 
   /**
    * 编辑器挂载回调
@@ -103,43 +108,36 @@ export default function TextDiff() {
       setStats({ added, removed });
     });
 
-    // 监听左侧（original）编辑器内容变化，同步 state
+    // 监听左侧（original）编辑器内容变化，仅同步 ref（不更新 state，避免 prop 变化触发 setValue 重置光标）
     const originalEditor = editor.getOriginalEditor();
     originalEditor.onDidChangeModelContent(() => {
-      if (isInternalChange.current) return;
-      const value = originalEditor.getValue();
-      if (value !== leftText) {
-        setLeftText(value);
-      }
+      leftTextRef.current = originalEditor.getValue();
     });
   };
 
   /**
    * 右侧（modified）内容变化回调
-   * @monaco-editor/react 的 onChange 仅在 modified 变化时触发
+   * 仅同步 ref（不更新 state，避免 prop 变化触发 setValue 重置光标）
    */
   const handleChange = (value) => {
-    if (isInternalChange.current) return;
-    if (value !== undefined && value !== rightText) {
-      setRightText(value);
+    if (value !== undefined) {
+      rightTextRef.current = value;
     }
   };
 
-  /** 清空两侧文本 */
+  /** 清空两侧文本：更新 state 触发 DiffEditor 重新 setValue，同时同步 ref */
   const handleClear = () => {
-    isInternalChange.current = true;
+    leftTextRef.current = '';
+    rightTextRef.current = '';
     setLeftText('');
     setRightText('');
     setStats({ added: 0, removed: 0 });
-    setTimeout(() => {
-      isInternalChange.current = false;
-    }, 0);
   };
 
-  /** 复制右侧（修改后）文本 */
+  /** 复制右侧（修改后）文本：从 ref 取最新值 */
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(rightText);
+      await navigator.clipboard.writeText(rightTextRef.current);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -158,13 +156,13 @@ export default function TextDiff() {
   }, []);
 
   return (
-    <div className="flex h-screen flex-col bg-surface-dark">
+    <div className="flex h-screen flex-col bg-panel">
       {/* 紧凑标题栏：单行，含标题、统计、语言选择、操作按钮 */}
-      <div className="flex shrink-0 items-center justify-between border-b border-muted/20 px-4 py-2">
+      <div className="flex shrink-0 items-center justify-between border-b border-muted px-4 py-2">
         <div className="flex items-center gap-2">
           <GitCompare size={16} className="text-accent" />
-          <h1 className="text-sm font-bold text-ink text-emboss-dark">文本对比</h1>
-          <span className="font-mono text-xxs text-ink-muted/50">// MONACO DIFF</span>
+          <h1 className="text-sm font-bold text-ink text-emboss">文本对比</h1>
+          <span className="font-mono text-xxs text-ink-muted">// MONACO DIFF</span>
         </div>
 
         <div className="flex items-center gap-3">
@@ -180,11 +178,11 @@ export default function TextDiff() {
 
           {/* 语言选择 */}
           <div className="flex items-center gap-1">
-            <Code2 size={12} className="text-ink-muted/60" />
+            <Code2 size={12} className="text-ink-muted" />
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="rounded border border-muted/30 bg-surface-dark px-2 py-0.5 font-mono text-xxs text-ink focus:border-accent focus:outline-none"
+              className="rounded border border-muted bg-panel px-2 py-0.5 font-mono text-xxs text-ink focus:border-accent focus:outline-none"
             >
               {LANGUAGES.map((lang) => (
                 <option key={lang.id} value={lang.id}>
@@ -221,7 +219,7 @@ export default function TextDiff() {
           original={leftText}
           modified={rightText}
           language={language}
-          theme="itforge-dark"
+          theme="itforge-light"
           onMount={handleMount}
           onChange={handleChange}
           options={{
