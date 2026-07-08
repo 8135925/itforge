@@ -234,7 +234,7 @@ export default function TextDiff() {
           original={leftText}
           modified={rightText}
           language={language}
-          theme={isDark ? 'itforge-dark' : 'itforge-light'}
+          theme="itforge-light"
           onMount={handleMount}
           onChange={handleChange}
           options={{
