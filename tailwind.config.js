@@ -33,7 +33,14 @@ export default {
         // LED 状态色
         'led-green': '#22c55e',
         'led-amber': '#f59e0b',
-        'led-red': '#ff4757'
+        'led-red': '#ff4757',
+        // 深色纯色表面：用于代码块、结果框、终端显示区
+        // 严格禁止在此类元素上使用 background-image、网格、噪点、扫描线等图案
+        'surface-dark': '#1e1e2e',
+        // 深色表面上的主文本色（柔和白）
+        'surface-text': '#cdd6f4',
+        // 深色表面上的次要文本色
+        'surface-muted': '#7f849c'
       },
       // ============ 字体配对 ============
       fontFamily: {

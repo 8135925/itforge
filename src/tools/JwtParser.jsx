@@ -4,9 +4,14 @@ import { Copy, Check, Ticket, AlertCircle, ShieldCheck } from 'lucide-react';
 /**
  * JwtParser - JWT 解析器
  * 解码 JWT 的 Header 与 Payload，不验证签名
+ * 默认提供示例 token：HS256 算法，含用户信息、权限、过期时间等业务字段
  */
+
+// 默认示例 JWT：HS256 + 用户认证 Payload（含 iss/sub/aud/exp/nbf/iat/jti 等标准声明）
+const DEFAULT_JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiIsImFkbWluIjp0cnVlLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJleHAiOjE3ODM1MjY0MDAsInN1YiI6InVzcl8yMDI2MDcwODAwMSIsImF1ZCI6WyJbXCJvcmRlci1zZXJ2aWNlXCIiLCIgXCJwYXltZW50LXNlcnZpY2VcIl0iXSwibmJmIjoxNzgzNTI2NDAwLCJpYXQiOjE3ODM1MjY0MDAsImp0aSI6InRva19hMWIyYzNkNGU1ZjZnN2g4aTlqMCJ9.4wMNMKoQg9xbxq6wOyieiv01VHYh50D5B9R8jr4Fjy4';
+
 export default function JwtParser() {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState(DEFAULT_JWT);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState('');
 
@@ -124,7 +129,7 @@ export default function JwtParser() {
                 {copied === 'header' ? <Check size={14} /> : <Copy size={14} />}
               </button>
             </div>
-            <pre className="industrial-scroll overflow-auto rounded-md bg-ink/95 p-3 font-mono text-xs text-led-green shadow-recessed">
+            <pre className="surface-display industrial-scroll overflow-auto !p-3 !text-xs">
               {JSON.stringify(parsed.header, null, 2)}
             </pre>
           </div>
@@ -141,7 +146,7 @@ export default function JwtParser() {
                 {copied === 'payload' ? <Check size={14} /> : <Copy size={14} />}
               </button>
             </div>
-            <pre className="industrial-scroll overflow-auto rounded-md bg-ink/95 p-3 font-mono text-xs text-led-green shadow-recessed">
+            <pre className="surface-display industrial-scroll overflow-auto !p-3 !text-xs">
               {JSON.stringify(parsed.payload, null, 2)}
             </pre>
           </div>

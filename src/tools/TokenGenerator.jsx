@@ -106,8 +106,8 @@ export default function TokenGenerator() {
         </div>
       </div>
 
-      {/* 结果显示：CRT 屏幕风格 */}
-      <div className="industrial-card scanlines p-5">
+      {/* 结果显示：纯色深色表面，无扫描线/网格 */}
+      <div className="industrial-card p-5">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <KeyRound size={14} className="text-accent" />
@@ -115,7 +115,7 @@ export default function TokenGenerator() {
           </div>
           <span className="font-mono text-xxs text-ink-muted/60">{token.length} 位</span>
         </div>
-        <div className="industrial-scroll break-all rounded-md bg-ink/95 p-4 font-mono text-sm text-led-green shadow-recessed">
+        <div className="surface-display industrial-scroll break-all">
           {token || '点击生成按钮...'}
         </div>
       </div>

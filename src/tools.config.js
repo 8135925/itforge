@@ -25,7 +25,7 @@ export const TOOLS = [
       {
         id: 'hash-text',
         name: 'Hash 文本',
-        desc: 'SHA-1/256/384/512 哈希计算，纯前端 Web Crypto API',
+        desc: 'MD5、SHA1/256/512、SHA3、RIPEMD160 多算法哈希计算',
         icon: '#️⃣'
       }
     ]
@@ -34,6 +34,12 @@ export const TOOLS = [
     group: '转换器',
     icon: '🔄',
     items: [
+      {
+        id: 'base64-codec',
+        name: 'Base64 编码/解码',
+        desc: 'Base64 编码与解码，支持 UTF-8 安全转换',
+        icon: '🔢'
+      },
       {
         id: 'date-converter',
         name: '日期时间转换器',
@@ -57,12 +63,6 @@ export const TOOLS = [
         name: 'CSV to JSON',
         desc: 'CSV 数据解析为 JSON 数组，支持自定义分隔符',
         icon: '📊'
-      },
-      {
-        id: 'base64-codec',
-        name: 'Base64 编码/解码',
-        desc: 'Base64 编码与解码，支持 UTF-8 安全转换',
-        icon: '🔢'
       },
       {
         id: 'json-formatter',

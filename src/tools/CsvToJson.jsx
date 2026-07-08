@@ -1,12 +1,20 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Copy, Check, FileSpreadsheet, ArrowRight, AlertCircle } from 'lucide-react';
 
 /**
  * CsvToJson - CSV 转 JSON 工具
  * 支持自定义分隔符、首行作为表头、引号包裹字段
+ * 默认提供示例数据：开发者信息表（含表头 + 3 条记录）
  */
+
+// 默认示例 CSV：开发者信息表
+const DEFAULT_CSV = `name,age,city,role,active
+Alice,30,Beijing,Engineer,true
+Bob,25,Shanghai,Designer,false
+Charlie,28,Shenzhen,Manager,true`;
+
 export default function CsvToJson() {
-  const [csvInput, setCsvInput] = useState('');
+  const [csvInput, setCsvInput] = useState(DEFAULT_CSV);
   const [jsonOutput, setJsonOutput] = useState('');
   const [delimiter, setDelimiter] = useState(',');
   const [hasHeader, setHasHeader] = useState(true);
@@ -90,6 +98,12 @@ export default function CsvToJson() {
       /* 静默 */
     }
   }, [jsonOutput]);
+
+  // 输入或配置变化时自动转换，默认示例立即可见结果
+  useEffect(() => {
+    convert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [csvInput, delimiter, hasHeader]);
 
   return (
     <div className="space-y-4">

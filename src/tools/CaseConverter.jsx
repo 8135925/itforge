@@ -4,53 +4,61 @@ import { Copy, Check, Type, ArrowRight } from 'lucide-react';
 /**
  * CaseConverter - 大小写转换工具
  * 支持 camelCase / PascalCase / snake_case / kebab-case / CONSTANT_CASE 等互转
+ * 默认提供示例文本 "abc123"，便于即时查看各命名风格的转换效果
  */
+
+// 默认示例输入：字母+数字组合，便于验证分词与转换逻辑
+const DEFAULT_INPUT = 'abc123';
+
+/**
+ * 将任意字符串拆分为单词数组
+ * 支持 camelCase / PascalCase / snake_case / kebab-case / 空格分隔
+ */
+function splitWords(text) {
+  if (!text) return [];
+  return text
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')  // camelCase 分词
+    .replace(/[_\-]+/g, ' ')                  // 下划线/连字符转空格
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean);
+}
+
+/** 转换函数集合：将单词数组映射为各种命名风格 */
+const converters = {
+  camelCase: (words) =>
+    words.map((w, i) => (i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())).join(''),
+  PascalCase: (words) =>
+    words.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(''),
+  snake_case: (words) => words.map((w) => w.toLowerCase()).join('_'),
+  'kebab-case': (words) => words.map((w) => w.toLowerCase()).join('-'),
+  CONSTANT_CASE: (words) => words.map((w) => w.toUpperCase()).join('_'),
+  'lower case': (words) => words.map((w) => w.toLowerCase()).join(' '),
+  'UPPER CASE': (words) => words.map((w) => w.toUpperCase()).join(' '),
+  'Title Case': (words) => words.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
+};
+
+/** 对输入文本执行全部转换，返回结果对象 */
+function convertAll(text) {
+  if (!text) return {};
+  const words = splitWords(text);
+  const computed = {};
+  for (const [name, fn] of Object.entries(converters)) {
+    computed[name] = fn(words);
+  }
+  return computed;
+}
+
 export default function CaseConverter() {
-  const [input, setInput] = useState('');
-  const [results, setResults] = useState({});
+  // 惰性初始化：默认填入示例文本并预计算全部转换结果
+  const [input, setInput] = useState(DEFAULT_INPUT);
+  const [results, setResults] = useState(() => convertAll(DEFAULT_INPUT));
   const [copied, setCopied] = useState('');
 
-  /**
-   * 将任意字符串拆分为单词数组
-   * 支持 camelCase / PascalCase / snake_case / kebab-case / 空格分隔
-   */
-  const splitWords = (text) => {
-    if (!text) return [];
-    return text
-      .replace(/([a-z0-9])([A-Z])/g, '$1 $2')  // camelCase 分词
-      .replace(/[_\-]+/g, ' ')                  // 下划线/连字符转空格
-      .replace(/\s+/g, ' ')
-      .trim()
-      .split(' ')
-      .filter(Boolean);
-  };
-
-  /** 转换函数集合 */
-  const converters = {
-    camelCase: (words) =>
-      words.map((w, i) => (i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())).join(''),
-    PascalCase: (words) =>
-      words.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(''),
-    snake_case: (words) => words.map((w) => w.toLowerCase()).join('_'),
-    'kebab-case': (words) => words.map((w) => w.toLowerCase()).join('-'),
-    CONSTANT_CASE: (words) => words.map((w) => w.toUpperCase()).join('_'),
-    'lower case': (words) => words.map((w) => w.toLowerCase()).join(' '),
-    'UPPER CASE': (words) => words.map((w) => w.toUpperCase()).join(' '),
-    'Title Case': (words) => words.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
-  };
-
-  /** 执行转换 */
+  /** 执行转换：基于当前输入重新计算所有命名风格 */
   const convert = useCallback(() => {
-    if (!input) {
-      setResults({});
-      return;
-    }
-    const words = splitWords(input);
-    const computed = {};
-    for (const [name, fn] of Object.entries(converters)) {
-      computed[name] = fn(words);
-    }
-    setResults(computed);
+    setResults(convertAll(input));
   }, [input]);
 
   const handleCopy = useCallback(async (value, key) => {

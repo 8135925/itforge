@@ -4,14 +4,29 @@ import { Copy, Check, ArrowRightLeft, AlertCircle, Binary } from 'lucide-react';
 /**
  * Base64Codec - Base64 编码/解码工具
  * 支持 UTF-8 安全转换（处理多字节字符）
+ * 默认提供示例文本 "12345678"，便于即时验证双向转换
  */
+
+// 默认示例明文：常见数字串，便于快速验证编码/解码效果
+const DEFAULT_PLAIN = '12345678';
+
+/** UTF-8 安全的 Base64 编码：使用 TextEncoder 处理多字节字符 */
+function encodeBase64(text) {
+  if (!text) return '';
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  bytes.forEach((b) => (binary += String.fromCharCode(b)));
+  return btoa(binary);
+}
+
 export default function Base64Codec() {
-  const [plainText, setPlainText] = useState('');
-  const [base64Text, setBase64Text] = useState('');
+  // 惰性初始化：默认填入示例明文，并预计算对应的 Base64 结果
+  const [plainText, setPlainText] = useState(DEFAULT_PLAIN);
+  const [base64Text, setBase64Text] = useState(() => encodeBase64(DEFAULT_PLAIN));
   const [error, setError] = useState('');
   const [copied, setCopied] = useState('');
 
-  /** UTF-8 安全的 Base64 编码：使用 TextEncoder 处理多字节字符 */
+  /** 编码回调：将明文编码为 Base64 */
   const encode = useCallback(() => {
     if (!plainText) {
       setBase64Text('');
@@ -19,10 +34,7 @@ export default function Base64Codec() {
       return;
     }
     try {
-      const bytes = new TextEncoder().encode(plainText);
-      let binary = '';
-      bytes.forEach((b) => (binary += String.fromCharCode(b)));
-      setBase64Text(btoa(binary));
+      setBase64Text(encodeBase64(plainText));
       setError('');
     } catch (e) {
       setError(`编码失败：${e.message}`);

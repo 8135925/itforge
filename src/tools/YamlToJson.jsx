@@ -1,13 +1,44 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import yaml from 'js-yaml';
 import { Copy, Check, ArrowRight, ArrowLeft, FileText, AlertCircle } from 'lucide-react';
 
 /**
  * YamlToJson - YAML 与 JSON 互转工具
  * 依赖 js-yaml 库实现解析
+ * 默认提供示例数据：应用配置文件（含嵌套、列表、多类型）
  */
+
+// 默认示例 YAML：应用配置文件
+const DEFAULT_YAML = `# ITForge 应用配置
+name: ITForge
+version: 1.0.0
+description: 在线开发者工具箱
+
+server:
+  host: 0.0.0.0
+  port: 3000
+  debug: true
+
+database:
+  driver: postgres
+  url: postgres://localhost:5432/itforge
+  pool:
+    min: 5
+    max: 20
+
+features:
+  - token-generator
+  - hash-text
+  - base64-codec
+  - json-formatter
+
+author:
+  name: HL
+  email: dev@qq.com
+  url: https://ittool.qq.com`;
+
 export default function YamlToJson() {
-  const [yamlInput, setYamlInput] = useState('');
+  const [yamlInput, setYamlInput] = useState(DEFAULT_YAML);
   const [jsonOutput, setJsonOutput] = useState('');
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
@@ -59,6 +90,12 @@ export default function YamlToJson() {
       /* 静默 */
     }
   }, [jsonOutput]);
+
+  // YAML 输入变化时自动转换为 JSON，默认示例立即可见结果
+  useEffect(() => {
+    yamlToJson();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [yamlInput]);
 
   return (
     <div className="space-y-4">

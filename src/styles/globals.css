@@ -1,7 +1,11 @@
 /*
  * globals.css - 全局样式
- * 包含 Tailwind 指令、Industrial.md Design Tokens（CSS 变量）、全局纹理与噪声覆盖
- * 所有视觉规范严格来源于 Industrial.md，禁止在此文件外硬编码 HEX 值
+ * 包含 Tailwind 指令、Industrial.md Design Tokens（CSS 变量）、工业组件类
+ *
+ * ⚠️ 设计约束（强一致性规则）：
+ * - 全局禁止使用 background-image 网格、噪点、SVG 图案、重复渐变
+ * - 深色表面（代码块、结果框、终端区）统一使用纯色 bg-surface-dark
+ * - 保证文本清晰可读，无视觉干扰
  */
 
 @tailwind base;
@@ -39,9 +43,6 @@
     /* 缓动曲线（机械弹簧） */
     --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --ease-mechanical: cubic-bezier(0.4, 0, 0.2, 1);
-
-    /* 噪声纹理 SVG（哑光塑料微观质感） */
-    --noise-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
   }
 
   /* 全局基础样式 */
@@ -54,46 +55,17 @@
   }
 
   body {
-    /* 底盘底色 + 噪声纹理（mix-blend-overlay 模拟哑光塑料） */
+    /* 底盘底色：纯色，无纹理覆盖 */
     background-color: var(--background);
     color: var(--text-primary);
     font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    position: relative;
     min-height: 100vh;
   }
 
-  /* 噪声覆盖层：固定定位，模拟工业塑料微观质感 */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    background-image: var(--noise-texture);
-    opacity: 0.2;
-    mix-blend-mode: overlay;
-  }
-
-  /* 顶部光照热点：强化左上光源 */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background: radial-gradient(
-      circle at 0% 0%,
-      rgba(255, 255, 255, 0.4) 0%,
-      transparent 50%
-    );
-  }
-
   #root {
-    position: relative;
-    z-index: 1;
     min-height: 100vh;
   }
 }
@@ -103,15 +75,9 @@
  * 来源：Industrial.md "Component Stylings"
  * ======================================== */
 @layer components {
-  /* 工业卡片：螺栓固定面板 */
+  /* 工业卡片：纯色面板 + 拟物阴影（无 background-image 图案） */
   .industrial-card {
     @apply relative rounded-lg bg-chassis shadow-card transition-all duration-300 ease-spring;
-    /* 四角螺丝（CSS 径向渐变） */
-    background-image:
-      radial-gradient(circle at 12px 12px, rgba(0,0,0,0.18) 2px, transparent 3px),
-      radial-gradient(circle at calc(100% - 12px) 12px, rgba(0,0,0,0.18) 2px, transparent 3px),
-      radial-gradient(circle at 12px calc(100% - 12px), rgba(0,0,0,0.18) 2px, transparent 3px),
-      radial-gradient(circle at calc(100% - 12px) calc(100% - 12px), rgba(0,0,0,0.18) 2px, transparent 3px);
   }
 
   .industrial-card-hover {
@@ -177,34 +143,16 @@
     @apply led-indicator bg-accent shadow-glow animate-led-pulse;
   }
 
-  /* 扫描线覆盖层（CRT 屏幕） */
-  .scanlines {
-    position: relative;
+  /*
+   * 深色结果展示表面（替代原 scanlines + bg-ink 方案）
+   * 纯色背景，无任何 background-image / 网格 / 噪点 / 扫描线
+   * 用于：代码块、哈希结果、JWT 解析输出、终端显示区
+   */
+  .surface-display {
+    @apply rounded-md bg-surface-dark p-4 font-mono text-sm text-surface-text shadow-recessed;
   }
 
-  .scanlines::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(
-      rgba(18, 16, 16, 0) 50%,
-      rgba(0, 0, 0, 0.25) 50%
-    );
-    background-size: 100% 4px;
-    border-radius: inherit;
-  }
-
-  /* 蓝图网格背景 */
-  .blueprint-grid {
-    background-image:
-      linear-gradient(#636e72 1px, transparent 1px),
-      linear-gradient(90deg, #636e72 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.1;
-  }
-
-  /* 通风槽（卡片右上角） */
+  /* 通风槽（卡片右上角装饰） */
   .vent-slot {
     @apply h-6 w-1 rounded-full bg-muted;
     box-shadow: inset 1px 1px 2px rgba(0,0,0,0.15);
@@ -232,7 +180,7 @@
 }
 
 /* ========================================
- * 工具类：自定义滚动行为
+ * 工具类
  * ======================================== */
 @layer utilities {
   /* 减少动效偏好支持 */

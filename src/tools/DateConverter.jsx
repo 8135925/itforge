@@ -140,7 +140,7 @@ export default function DateConverter() {
 
       {/* 派生信息展示 */}
       {isValid && (
-        <div className="industrial-card scanlines p-5">
+        <div className="industrial-card p-5">
           <div className="mb-3 flex items-center gap-2">
             <Calendar size={14} className="text-accent" />
             <span className="tech-label">解析结果 // PARSED</span>

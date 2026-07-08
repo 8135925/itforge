@@ -1,12 +1,33 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Copy, Check, Tag, ArrowRight, AlertCircle } from 'lucide-react';
 
 /**
  * XmlToJson - XML 转 JSON 工具
  * 使用浏览器内置 DOMParser 解析 XML，递归转换为 JSON 结构
+ * 默认提供示例数据：用户配置文件（含嵌套、属性、列表）
  */
+
+// 默认示例 XML：用户配置文件（含属性、嵌套元素、重复子节点）
+const DEFAULT_XML = `<?xml version="1.0" encoding="UTF-8"?>
+<config id="app-001" version="1.0.0">
+  <name>ITForge</name>
+  <description>在线开发者工具箱</description>
+  <server>
+    <host>0.0.0.0</host>
+    <port>3000</port>
+    <debug>true</debug>
+  </server>
+  <features>
+    <feature name="token-generator" enabled="true"/>
+    <feature name="hash-text" enabled="true"/>
+    <feature name="base64-codec" enabled="true"/>
+    <feature name="json-formatter" enabled="true"/>
+  </features>
+  <author name="HL" email="dev@qq.com"/>
+</config>`;
+
 export default function XmlToJson() {
-  const [xmlInput, setXmlInput] = useState('');
+  const [xmlInput, setXmlInput] = useState(DEFAULT_XML);
   const [jsonOutput, setJsonOutput] = useState('');
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
@@ -95,6 +116,12 @@ export default function XmlToJson() {
       /* 静默 */
     }
   }, [jsonOutput]);
+
+  // XML 输入变化时自动转换，默认示例立即可见结果
+  useEffect(() => {
+    convert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [xmlInput]);
 
   return (
     <div className="space-y-4">

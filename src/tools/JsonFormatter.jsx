@@ -1,13 +1,17 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Copy, Check, Trash2, Minimize2, Maximize2, AlertCircle } from 'lucide-react';
 
 /**
  * JsonFormatter - JSON 格式化工具
  * 功能：美化、压缩、校验 JSON，支持 2/4 空格缩进
- * 标准组件写法示例：自包含逻辑 + Industrial 输入框/按钮样式
+ * 默认提供示例数据：用户信息 + 嵌套结构 + 数组
  */
+
+// 默认示例 JSON：用户信息（含嵌套对象、数组、多种数据类型）
+const DEFAULT_JSON = `{"name":"ITForge","version":"1.0.0","author":{"name":"HL","email":"dev@qq.com"},"features":["token","hash","base64"],"tags":["frontend","tools","react"],"config":{"port":3000,"debug":true,"rateLimit":100},"createdAt":"2026-07-08T00:00:00Z"}`;
+
 export default function JsonFormatter() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(DEFAULT_JSON);
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [indent, setIndent] = useState(2);
@@ -65,6 +69,12 @@ export default function JsonFormatter() {
     setOutput('');
     setError('');
   }, []);
+
+  // 输入或缩进变化时自动格式化，默认示例立即可见结果
+  useEffect(() => {
+    formatJson();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, indent]);
 
   return (
     <div className="space-y-4">
