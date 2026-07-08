@@ -1,8 +1,9 @@
 import React, { Suspense, useState, lazy } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar.jsx';
 import Breadcrumb from './components/Breadcrumb.jsx';
 import ToolLoader from './components/ToolLoader.jsx';
+import TopBar from './components/TopBar.jsx';
 import HomePage from './pages/HomePage.jsx';
 
 // 文本对比工具需要全屏布局，单独懒加载，跳出 max-w-content 框架限制
@@ -11,15 +12,21 @@ const TextDiff = lazy(() => import('./tools/TextDiff.jsx'));
 /**
  * App - 应用布局框架
  * 结构：左侧可折叠 Sidebar + 右侧内容区（面包屑 + 工具内容）
+ * 右上角 TopBar（GitHub / 关于 / 主题切换），文本对比界面除外
  * 视觉规范遵循 Industrial.md
  */
 export default function App() {
   // 折叠状态提升至 App 层，以便同步调整主内容区边距
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
+  // 文本对比界面全屏布局，不显示右上角 TopBar
+  const showTopBar = location.pathname !== '/tool/text-diff';
 
   return (
     <div className="relative flex min-h-screen w-full">
       <Sidebar collapsed={collapsed} onToggleCollapse={setCollapsed} />
+      {/* 右上角工具栏：GitHub / 关于 / 主题切换（文本对比界面除外） */}
+      {showTopBar && <TopBar />}
       {/* 主内容区：边距随侧边栏折叠状态同步变化 */}
       <main
         className={[

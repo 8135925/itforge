@@ -11,36 +11,37 @@ export default {
     extend: {
       // ============ 颜色（工业拟物色板）============
       // 命名遵循 Industrial.md：物理材质语义化
+      // 使用 CSS 变量 + RGB 通道格式，支持透明度修饰符（如 bg-muted/30）和深色模式切换
       colors: {
         // Level 0：底盘底色（哑光 ABS 塑料）
-        chassis: '#e0e5ec',
+        chassis: 'rgb(var(--chassis) / <alpha-value>)',
         // Level +1：抬升面板表面
-        panel: '#f0f2f5',
+        panel: 'rgb(var(--panel) / <alpha-value>)',
         // Level -1：凹陷区域（输入框、屏幕边框）
-        muted: '#d1d9e6',
+        muted: 'rgb(var(--muted) / <alpha-value>)',
         // 主文本（深炭墨）
-        ink: '#2d3436',
+        ink: 'rgb(var(--ink) / <alpha-value>)',
         // 次文本/标签（深石板灰，WCAG AA 合规）
-        'ink-muted': '#4a5568',
+        'ink-muted': 'rgb(var(--ink-muted) / <alpha-value>)',
         // 安全橙强调色（Braun Red）- 仅用于交互/状态/警示
-        accent: '#ff4757',
-        'accent-foreground': '#ffffff',
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        'accent-foreground': 'rgb(var(--accent-foreground) / <alpha-value>)',
         // 拟物阴影对：暗半部与亮半部
-        'shadow-dark': '#babecc',
-        'shadow-light': '#ffffff',
+        'shadow-dark': 'rgb(var(--shadow-dark-color) / <alpha-value>)',
+        'shadow-light': 'rgb(var(--shadow-light-color) / <alpha-value>)',
         // 深阴影边框
-        'border-deep': '#a3b1c6',
+        'border-deep': 'rgb(var(--border-deep) / <alpha-value>)',
         // LED 状态色
-        'led-green': '#22c55e',
-        'led-amber': '#f59e0b',
-        'led-red': '#ff4757',
+        'led-green': 'rgb(var(--led-green) / <alpha-value>)',
+        'led-amber': 'rgb(var(--led-amber) / <alpha-value>)',
+        'led-red': 'rgb(var(--led-red) / <alpha-value>)',
         // 深色纯色表面：用于代码块、结果框、终端显示区
         // 严格禁止在此类元素上使用 background-image、网格、噪点、扫描线等图案
-        'surface-dark': '#1e1e2e',
+        'surface-dark': 'rgb(var(--surface-dark) / <alpha-value>)',
         // 深色表面上的主文本色（柔和白）
-        'surface-text': '#cdd6f4',
+        'surface-text': 'rgb(var(--surface-text) / <alpha-value>)',
         // 深色表面上的次要文本色
-        'surface-muted': '#7f849c'
+        'surface-muted': 'rgb(var(--surface-muted) / <alpha-value>)'
       },
       // ============ 字体配对 ============
       fontFamily: {
@@ -59,22 +60,23 @@ export default {
       },
       // ============ 拟物阴影系统（核心视觉签名）============
       // 双阴影通过光线模拟立体感：暗影在右下，高光在左上
+      // 使用 CSS 变量，支持深色模式自动切换阴影色值
       boxShadow: {
         // 基础抬升：卡片、面板
-        card: '8px 8px 16px #babecc, -8px -8px 16px #ffffff',
+        card: 'var(--shadow-card)',
         // 高抬升：交互元素、悬浮卡片
-        floating: '12px 12px 24px #babecc, -12px -12px 24px #ffffff, inset 1px 1px 0 rgba(255,255,255,0.5)',
+        floating: 'var(--shadow-floating)',
         // 按压态：阴影方向反转，元素被推入表面
-        pressed: 'inset 6px 6px 12px #babecc, inset -6px -6px 12px #ffffff',
+        pressed: 'var(--shadow-pressed)',
         // 凹陷态：输入框、屏幕、凹槽
-        recessed: 'inset 4px 4px 8px #babecc, inset -4px -4px 8px #ffffff',
+        recessed: 'var(--shadow-recessed)',
         // 机械硬边缘：金属标签、边框
-        sharp: '4px 4px 8px rgba(0,0,0,0.15), -1px -1px 1px rgba(255,255,255,0.8)',
+        sharp: 'var(--shadow-sharp)',
         // LED 发光：状态指示、聚焦
-        glow: '0 0 10px 2px rgba(255, 71, 87, 0.6)',
-        'glow-green': '0 0 10px 2px rgba(34, 197, 94, 0.6)',
+        glow: 'var(--shadow-glow)',
+        'glow-green': 'var(--shadow-glow-green)',
         // 强调色按钮拟物阴影（红色染色）
-        'accent-lift': '4px 4px 8px rgba(166,50,60,0.4), -4px -4px 8px rgba(255,100,110,0.4)'
+        'accent-lift': 'var(--shadow-accent-lift)'
       },
       // ============ 缓动曲线（机械弹簧物理）============
       transitionTimingFunction: {

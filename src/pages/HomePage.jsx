@@ -50,14 +50,15 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-3xl font-extrabold tracking-tight text-ink text-emboss sm:text-5xl">
-            开发者工具箱
-            <span className="block font-mono text-lg font-medium text-accent sm:text-2xl">
-              ITForge // v1.0.0
-            </span>
+            ITForge：开发者的技术锻造工坊
           </h1>
+          <span className="mt-3 block font-mono text-lg font-medium text-accent sm:text-2xl">
+            ITForge // v1.0.0
+          </span>
 
-          <p className="max-w-2xl text-base text-ink-muted sm:text-lg">
-            纯前端实现的工业级开发者工具集合，覆盖加密、转换、编解码等场景。所有计算在浏览器端完成，数据不离开本地。
+          <p className="max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
+            <span className="block">纯前端锻造工业级开发利器：加密、转换、编解码，</span>
+            <span className="block">万般计算皆在浏览器熔炉中淬炼成型——数据主权，寸步不离本地。</span>
           </p>
 
           {/* 统计条 */}

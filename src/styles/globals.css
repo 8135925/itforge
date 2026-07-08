@@ -17,21 +17,30 @@
  * 来源：Industrial.md "Design Token System"
  * ======================================== */
 @layer base {
+  /* ========================================
+   * 浅色模式 Design Tokens
+   * 颜色使用 RGB 通道格式（空格分隔），配合 Tailwind 的 rgb(var(--x) / <alpha>) 使用
+   * ======================================== */
   :root {
-    /* 颜色 */
-    --background: #e0e5ec;
-    --foreground: #f0f2f5;
-    --muted: #d1d9e6;
-    --text-primary: #2d3436;
-    --text-muted: #4a5568;
-    --accent: #ff4757;
-    --accent-foreground: #ffffff;
-    --shadow-dark: #babecc;
-    --shadow-light: #ffffff;
-    --border-deep: #a3b1c6;
-    --led-green: #22c55e;
+    /* 颜色（RGB 通道值，空格分隔） */
+    --chassis: 224 229 236;          /* #e0e5ec 底盘底色 */
+    --panel: 240 242 245;            /* #f0f2f5 抬升面板 */
+    --muted: 209 217 230;            /* #d1d9e6 凹陷区域 */
+    --ink: 45 52 54;                 /* #2d3436 主文本 */
+    --ink-muted: 74 85 104;          /* #4a5568 次文本 */
+    --accent: 255 71 87;             /* #ff4757 强调色 */
+    --accent-foreground: 255 255 255;/* #ffffff */
+    --shadow-dark-color: 186 190 204;/* #babecc 阴影暗半部 */
+    --shadow-light-color: 255 255 255;/* #ffffff 阴影亮半部 */
+    --border-deep: 163 177 198;      /* #a3b1c6 边框 */
+    --led-green: 34 197 94;          /* #22c55e */
+    --led-amber: 245 158 11;         /* #f59e0b */
+    --led-red: 255 71 87;            /* #ff4757 */
+    --surface-dark: 30 30 46;        /* #1e1e2e 深色结果区 */
+    --surface-text: 205 214 244;     /* #cdd6f4 深色表面文字 */
+    --surface-muted: 127 132 156;    /* #7f849c 深色表面次文字 */
 
-    /* 拟物阴影对 */
+    /* 拟物阴影对（浅色模式） */
     --shadow-card: 8px 8px 16px #babecc, -8px -8px 16px #ffffff;
     --shadow-floating: 12px 12px 24px #babecc, -12px -12px 24px #ffffff, inset 1px 1px 0 rgba(255,255,255,0.5);
     --shadow-pressed: inset 6px 6px 12px #babecc, inset -6px -6px 12px #ffffff;
@@ -39,10 +48,45 @@
     --shadow-sharp: 4px 4px 8px rgba(0,0,0,0.15), -1px -1px 1px rgba(255,255,255,0.8);
     --shadow-glow: 0 0 10px 2px rgba(255, 71, 87, 0.6);
     --shadow-glow-green: 0 0 10px 2px rgba(34, 197, 94, 0.6);
+    --shadow-accent-lift: 4px 4px 8px rgba(166,50,60,0.4), -4px -4px 8px rgba(255,100,110,0.4);
 
     /* 缓动曲线（机械弹簧） */
     --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --ease-mechanical: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ========================================
+   * 深色模式 Design Tokens
+   * 通过 .dark 类切换，覆盖浅色变量
+   * ======================================== */
+  .dark {
+    /* 颜色（RGB 通道值） */
+    --chassis: 26 26 38;             /* #1a1a26 深色底盘 */
+    --panel: 30 30 46;               /* #1e1e2e 深色面板 */
+    --muted: 20 20 30;               /* #14141e 深色凹陷 */
+    --ink: 205 214 244;              /* #cdd6f4 柔和白文字 */
+    --ink-muted: 127 132 156;        /* #7f849c 次要灰文字 */
+    --accent: 255 71 87;             /* #ff4757 保持红色 */
+    --accent-foreground: 255 255 255;
+    --shadow-dark-color: 10 10 20;   /* #0a0a14 更深的阴影 */
+    --shadow-light-color: 42 42 58;  /* #2a2a3a 深色模式高光 */
+    --border-deep: 58 58 74;         /* #3a3a4a 深色边框 */
+    --led-green: 34 197 94;          /* 保持 */
+    --led-amber: 245 158 11;         /* 保持 */
+    --led-red: 255 71 87;            /* 保持 */
+    --surface-dark: 10 10 20;        /* #0a0a14 更深的结果区 */
+    --surface-text: 205 214 244;     /* 保持 */
+    --surface-muted: 127 132 156;    /* 保持 */
+
+    /* 拟物阴影对（深色模式：暗半部用更深的黑，亮半部用稍亮的灰） */
+    --shadow-card: 8px 8px 16px #0a0a14, -8px -8px 16px #2a2a3a;
+    --shadow-floating: 12px 12px 24px #0a0a14, -12px -12px 24px #2a2a3a, inset 1px 1px 0 rgba(42,42,58,0.5);
+    --shadow-pressed: inset 6px 6px 12px #0a0a14, inset -6px -6px 12px #2a2a3a;
+    --shadow-recessed: inset 4px 4px 8px #0a0a14, inset -4px -4px 8px #2a2a3a;
+    --shadow-sharp: 4px 4px 8px rgba(0,0,0,0.4), -1px -1px 1px rgba(42,42,58,0.3);
+    --shadow-glow: 0 0 10px 2px rgba(255, 71, 87, 0.6);
+    --shadow-glow-green: 0 0 10px 2px rgba(34, 197, 94, 0.6);
+    --shadow-accent-lift: 4px 4px 8px rgba(166,50,60,0.5), -4px -4px 8px rgba(255,100,110,0.2);
   }
 
   /* 全局基础样式 */
@@ -55,9 +99,9 @@
   }
 
   body {
-    /* 底盘底色：纯色，无纹理覆盖 */
-    background-color: var(--background);
-    color: var(--text-primary);
+    /* 底盘底色：通过 CSS 变量响应主题切换 */
+    background-color: rgb(var(--chassis));
+    color: rgb(var(--ink));
     font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;

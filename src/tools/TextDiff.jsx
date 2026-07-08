@@ -37,6 +37,21 @@ monaco.editor.defineTheme('itforge-light', {
   },
 });
 
+// 定义透明背景的深色主题（深底浅字，融入项目深色模式面板）
+monaco.editor.defineTheme('itforge-dark', {
+  base: 'vs-dark',
+  inherit: true,
+  rules: [],
+  colors: {
+    'editor.background': '#00000000',
+    'editorCursor.foreground': '#cdd6f4',
+    'diffEditor.insertedTextBackground': '#22c55e44',
+    'diffEditor.removedTextBackground': '#ef444444',
+    'diffEditorGutter.insertedLineBackground': '#22c55e33',
+    'diffEditorGutter.removedLineBackground': '#ef444433',
+  },
+});
+
 // ========== 默认示例 ==========
 
 const DEFAULT_LEFT = `const greeting = 'Hello';
@@ -219,7 +234,7 @@ export default function TextDiff() {
           original={leftText}
           modified={rightText}
           language={language}
-          theme="itforge-light"
+          theme={isDark ? 'itforge-dark' : 'itforge-light'}
           onMount={handleMount}
           onChange={handleChange}
           options={{

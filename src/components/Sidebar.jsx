@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ChevronDown, X, Wrench } from 'lucide-react';
 import { TOOLS } from '../tools.config.js';
 
@@ -95,18 +95,25 @@ export default function Sidebar({ collapsed, onToggleCollapse }) {
         ].join(' ')}
         aria-label="工具导航"
       >
-        {/* 顶部品牌区 */}
+        {/* 顶部品牌区：点击跳转首页 */}
         <div className="flex h-16 items-center justify-between border-b border-border-deep/30 px-4">
-          <div className="flex items-center gap-2 overflow-hidden">
+          <Link to="/" className="flex items-center gap-2 overflow-hidden rounded transition-colors hover:text-accent" aria-label="返回首页">
             {/* 品牌 LED 指示器 */}
             <span className="led-on shrink-0" aria-hidden="true" />
-            <div className={['flex items-center gap-2 overflow-hidden', collapsed ? 'md:hidden' : ''].join(' ')}>
-              <Wrench size={20} className="shrink-0 text-accent" strokeWidth={2} />
-              <span className="whitespace-nowrap font-mono text-sm font-bold uppercase tracking-stamped text-ink">
-                ITForge
+            <div className={['flex flex-col overflow-hidden', collapsed ? 'md:hidden' : ''].join(' ')}>
+              <div className="flex items-center gap-2">
+                <Wrench size={20} className="shrink-0 text-accent" strokeWidth={2} />
+                <span className="whitespace-nowrap font-mono text-sm font-bold uppercase tracking-stamped text-ink">
+                  ITForge
+                </span>
+              </div>
+              <span className="mt-1 flex items-center gap-1.5 whitespace-nowrap pl-[28px] font-mono text-[11px] tracking-wide-stamp">
+                <span style={{ color: '#F56565' }} className="font-semibold">淬码成钢</span>
+                <span className="inline-block h-1 w-1 rounded-full" style={{ backgroundColor: '#CBD5E0' }} aria-hidden="true" />
+                <span style={{ color: '#F56565' }} className="font-semibold">终成大器</span>
               </span>
             </div>
-          </div>
+          </Link>
           {/* 移动端关闭按钮 */}
           <button
             type="button"
